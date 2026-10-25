@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     port: 1420,
     strictPort: true,
-    proxy: { "/admin/api": { target: fcc, changeOrigin: true } , "/health": { target: fcc, changeOrigin: true } },
+    proxy: { "/admin/api": { target: fcc, changeOrigin: true } , "/health": { target: fcc, changeOrigin: true }, "/openapi.json": { target: fcc, changeOrigin: true } },
   },
   build: { target: "es2022", outDir: "dist" },
 });

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //! Same-origin bridge. In release builds the window loads the UI from this tiny loopback
-//! server, which also forwards /admin/* and /health to fcc-server. The webview is then
+//! server, which also forwards /admin/*, /health and /openapi.json to fcc-server. The webview is then
 //! same-origin with the API, so an unmodified FCC install (whose Admin API only trusts
 //! loopback origins) works without any server change. SSE responses are streamed through.
 
@@ -39,7 +39,7 @@ pub async fn serve(app: tauri::AppHandle) -> std::io::Result<u16> {
 
 async fn handle(State(c): State<Ctx>, req: Request) -> Response {
     let path = req.uri().path().to_string();
-    if path.starts_with("/admin/") || path == "/admin" || path == "/health" {
+    if path.starts_with("/admin/") || path == "/admin" || path == "/health" || path == "/openapi.json" {
         return forward(&c, req).await;
     }
     asset(&c, &path)
