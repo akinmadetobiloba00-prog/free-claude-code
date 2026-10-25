@@ -37,6 +37,7 @@ install_muse=1
 install_aider=1
 install_agy=1
 enable_rtk_headroom=0
+install_desktop=0
 torch_backend=""
 temporary_file=""
 temporary_binary=""
@@ -72,6 +73,7 @@ Options:
   --voice-local            Install local Whisper voice transcription support.
   --torch-backend VALUE    Use a uv PyTorch backend, such as cu130. Requires local voice.
   --rtk-headroom           Install and configure RTK + Headroom token optimization.
+  --desktop                Also install FCC Desk, the desktop app (runs install-desktop.sh).
   --dry-run                Print commands without running them.
   --help                   Show this help text.
 USAGE
@@ -1540,6 +1542,9 @@ parse_args() {
             --rtk-headroom)
                 enable_rtk_headroom=1
                 ;;
+            --desktop)
+                install_desktop=1
+                ;;
             --dry-run)
                 dry_run=1
                 ;;
@@ -1868,6 +1873,13 @@ if [ "$enable_rtk_headroom" -eq 1 ]; then
     configure_headroom_for_selected_agents
 fi
 complete_install_step
+
+if [ "$install_desktop" -eq 1 ]; then
+    # FCC Desk add-on: same script existing users run on its own.
+    desk_flags=""
+    [ "$dry_run" -eq 0 ] || desk_flags="--dry-run"
+    curl -fsSL "https://raw.githubusercontent.com/akinmadetobiloba00-prog/free-claude-code/fcc-desk/scripts/install-desktop.sh" | sh -s -- $desk_flags
+fi
 
 if [ "$dry_run" -eq 1 ]; then
     printf '\nDry run complete. No changes were made.\n'

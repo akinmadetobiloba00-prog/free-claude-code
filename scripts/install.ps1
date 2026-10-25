@@ -2,6 +2,7 @@ param(
     [switch] $VoiceLocal,
     [string] $TorchBackend = "",
     [switch] $RtkHeadroom,
+    [switch] $Desktop,
     [switch] $DryRun,
     [switch] $Help,
     [Parameter(ValueFromRemainingArguments = $true)]
@@ -90,6 +91,7 @@ Options:
   -VoiceLocal            Install local Whisper voice transcription support.
   -TorchBackend VALUE    Use a uv PyTorch backend, such as cu130. Requires local voice.
   -RtkHeadroom           Install and configure RTK + Headroom token optimization.
+  -Desktop               Also install FCC Desk, the desktop app (runs install-desktop.ps1).
   -DryRun                Print commands without running them.
   -Help                  Show this help text.
 "@
@@ -2177,6 +2179,13 @@ finally {
     elseif (-not $installSucceeded) { Complete-InstallStep "Failed" }
     Show-InstallReport -Succeeded $installSucceeded -Cancelled $cancelled
     if ($script:FccVerified) { Show-InstallerNextSteps }
+}
+
+if ($Desktop -and $installSucceeded) {
+    # FCC Desk add-on: same script existing users run on its own.
+    $deskScript = Join-Path $PSScriptRoot "install-desktop.ps1"
+    if ($PSScriptRoot -and (Test-Path $deskScript)) { & $deskScript -DryRun:$DryRun }
+    else { & ([scriptblock]::Create((Invoke-RestMethod "https://raw.githubusercontent.com/akinmadetobiloba00-prog/free-claude-code/fcc-desk/scripts/install-desktop.ps1"))) -DryRun:$DryRun }
 }
 
 if ($DryRun) { Write-Host "Dry run complete. No changes were made." }
