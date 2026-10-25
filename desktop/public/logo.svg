@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="FCC Desk">
+  <!-- FCC Desk placeholder logo (black FCC monogram on orange). Original artwork; Studio will refine. -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#E0763C"/>
+  <g fill="#111111">
+    <!-- F -->
+    <rect x="92" y="164" width="40" height="184" rx="8"/>
+    <rect x="92" y="164" width="104" height="38" rx="8"/>
+    <rect x="92" y="238" width="86" height="36" rx="8"/>
+    <!-- C -->
+    <path d="M318 164h-56a50 50 0 0 0-50 50v84a50 50 0 0 0 50 50h56v-38h-52a16 16 0 0 1-16-16v-76a16 16 0 0 1 16-16h52z"/>
+    <!-- C -->
+    <path d="M430 164h-56a50 50 0 0 0-50 50v84a50 50 0 0 0 50 50h56v-38h-52a16 16 0 0 1-16-16v-76a16 16 0 0 1 16-16h52z"/>
+  </g>
+</svg>
