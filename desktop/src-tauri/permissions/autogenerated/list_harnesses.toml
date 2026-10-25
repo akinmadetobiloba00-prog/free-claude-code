@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-list-harnesses"
+description = "Enables the list_harnesses command without any pre-configured scope."
+commands.allow = ["list_harnesses"]
+
+[[permission]]
+identifier = "deny-list-harnesses"
+description = "Denies the list_harnesses command without any pre-configured scope."
+commands.deny = ["list_harnesses"]

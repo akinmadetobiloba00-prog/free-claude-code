@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-launch-in-terminal"
+description = "Enables the launch_in_terminal command without any pre-configured scope."
+commands.allow = ["launch_in_terminal"]
+
+[[permission]]
+identifier = "deny-launch-in-terminal"
+description = "Denies the launch_in_terminal command without any pre-configured scope."
+commands.deny = ["launch_in_terminal"]
