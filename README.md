@@ -48,6 +48,11 @@ Free-tier availability and limits are controlled by each provider and may change
 
 ## Quick Start
 
+## FCC Desk (desktop app, fork preview)
+
+This fork adds **FCC Desk**, a desktop chat app for FCC in [`desktop/`](desktop/README.md).
+It uses the same server, keys and sessions as the terminal commands. **Not affiliated with Anthropic.**
+
 <a id="install"></a>
 
 ### 1. Install
