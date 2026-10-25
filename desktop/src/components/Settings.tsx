@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check, ExternalLink } from "lucide-react";
 import { THEMES, ACCENTS, applyTheme, loadTheme, type ThemeId } from "@/lib/theme";
 import { getPort } from "@/lib/api";
+import { useDesk, UPGRADE_CMD } from "@/lib/store";
 import { openExternal } from "@/lib/native";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -52,9 +53,27 @@ export function Settings() {
           <label className="text-[13px] text-muted">Your name (for the greeting)<Input className="mt-1" value={name} onChange={(e) => { setName(e.target.value); localStorage.setItem("fcc.name", e.target.value); }} /></label>
           <label className="text-[13px] text-muted">FCC server port<div className="mt-1 flex gap-2"><Input value={port} onChange={(e) => setPort(e.target.value.replace(/\D/g, ""))} /><Button onClick={() => { localStorage.setItem("fcc.port", port || "8082"); location.reload(); }}>Apply</Button></div></label>
         </div>
+        <Compat />
         <About />
       </div>
     </div>
+  );
+}
+
+/** Which fcc-server this app is talking to and which session API it detected. */
+export function Compat() {
+  const d = useDesk();
+  const api = d.flavour === "code" ? "Code sessions (/admin/api/code)" : d.flavour === "chat" ? "Chat Sessions, compatibility mode (/admin/api/chat)" : "none found";
+  return (
+    <section className="mt-6">
+      <h2 className="text-[12px] font-medium uppercase tracking-wide text-subtle">FCC server compatibility</h2>
+      <div className="mt-2 rounded-card border border-line bg-card px-4 py-3 text-[13px] text-muted">
+        <div>fcc-server version: <span className="font-mono text-fg">{d.fccVersion ?? "unknown"}</span></div>
+        <div>Chat API: <span className="text-fg">{api}</span></div>
+        {d.flavour === "chat" && <div className="mt-1 text-subtle">Project folders, approvals and access modes need a newer fcc. Upgrade: <code className="font-mono">{UPGRADE_CMD}</code></div>}
+        {d.flavour === "none" && <div className="mt-1 text-warn">Chat is unavailable on this version. Upgrade: <code className="font-mono">{UPGRADE_CMD}</code></div>}
+      </div>
+    </section>
   );
 }
 

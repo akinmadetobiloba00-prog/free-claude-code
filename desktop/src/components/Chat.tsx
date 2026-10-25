@@ -99,7 +99,7 @@ export function Chat() {
     <div className="flex h-full flex-col">
       <header className="flex h-12 shrink-0 items-center gap-2 border-b border-line px-4">
         <h2 className="truncate text-[15px] font-medium">{s.title}</h2>
-        <span className="flex min-w-0 items-center gap-1 truncate text-[12px] text-subtle" title={s.cwd}><FolderGit2 size={13} /> {s.cwd}</span>
+        {s.cwd && <span className="flex min-w-0 items-center gap-1 truncate text-[12px] text-subtle" title={s.cwd}><FolderGit2 size={13} /> {s.cwd}</span>}
         {busy && <span className="ml-auto flex items-center gap-1.5 text-[12px] text-muted"><span className="thinking-dot h-2 w-2 rounded-full bg-accent" /> Working…</span>}
       </header>
       <div ref={scroller} onScroll={(e) => { const el = e.currentTarget; stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80; }} className="flex-1 overflow-y-auto">
@@ -110,10 +110,10 @@ export function Chat() {
               <div key={it.id} className="my-4 flex justify-end"><div className="max-w-[85%] whitespace-pre-wrap rounded-card bg-raised px-3.5 py-2.5 text-[15px] leading-6">{it.text}</div></div>
             );
             if (it.kind === "text") return <div key={it.id} className="prose-fcc my-3 font-serif text-[16.5px] leading-7" dangerouslySetInnerHTML={{ __html: it.html ?? "" }} />;
-            if (it.kind === "prompt") { const p = d.live.prompts.get(it.id); return p ? <PromptCard key={it.id} prompt={p} /> : null; }
+            if (it.kind === "prompt") { if (!d.features.prompts) return null; const p = d.live.prompts.get(it.id); return p ? <PromptCard key={it.id} prompt={p} /> : null; }
             return <ToolCard key={it.id} item={it} />;
           })}
-          {[...d.live.prompts.values()].filter((p) => p.status === "pending" && !d.live.items.has(p.id)).map((p) => <PromptCard key={p.id} prompt={p} />)}
+          {d.features.prompts && [...d.live.prompts.values()].filter((p) => p.status === "pending" && !d.live.items.has(p.id)).map((p) => <PromptCard key={p.id} prompt={p} />)}
           {busy && items.every((i) => i.kind === "user") && <div className="my-4 flex items-center gap-2 text-sm text-subtle"><span className="thinking-dot h-2.5 w-2.5 rounded-full bg-accent" /> Thinking…</div>}
           {d.live.run?.status === "failed" && d.live.run.error && <div className="my-3 flex gap-2 rounded-card border border-bad/40 bg-bad/10 p-3 text-[13px] text-bad"><AlertTriangle size={15} className="mt-0.5 shrink-0" /> {d.live.run.error}</div>}
           {d.live.notice && <div className="my-2 text-[12px] text-subtle">{d.live.notice}</div>}
